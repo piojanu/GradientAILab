@@ -25,7 +25,11 @@ parser.add_argument('--force_cpu', action='store_true', default=False,
 parser.add_argument('--save_each', type=int, default=100, metavar='N',
                     help='save model each N episodes (default: 100)')
 parser.add_argument('--save_path', type=str, default='.', metavar='<dir>',
-                    help='indicates directory where to save model')
+                    help='indicates directory where to save model \
+                    (default: current directory)')
+parser.add_argument('--load_model', type=str, default='', metavar='<path>',
+                    help='indicates model to load and continue learning \
+                    (default: start with "Xavier" initialization)')
 HPARAMS = parser.parse_args()
 
 import gym
@@ -136,8 +140,16 @@ env = gym.make('Pong-v0').unwrapped
 env.seed(HPARAMS.seed)
 
 # Prepare model, optimizer, environment etc.
+running_reward = None
+num_episodes = 0
+reward_sum = 0
 in_dim = 80 * 80  # input dimensionality: 80x80 grid
+
 policy = PolicyGradient(in_dim)
+if HPARAMS.load_model != '':
+    policy.load_state_dict(torch.load(HPARAMS.load_model))
+    num_episodes = int(HPARAMS.load_model.split('_')[-1].split('.')[0])
+
 if use_cuda:
     policy.cuda()
 
@@ -145,10 +157,6 @@ optimizer = optim.RMSprop(policy.parameters(), HPARAMS.lr)
 optimizer.zero_grad()
 
 observation = env.reset()
-
-running_reward = None
-num_episodes = 0
-reward_sum = 0
 
 # Let's play the game ;)
 while True:
