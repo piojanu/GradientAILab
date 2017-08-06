@@ -8,26 +8,28 @@
 import argparse
 parser = argparse.ArgumentParser(
     description='PyTorch stochastic policy gradient example on Pong.')
-parser.add_argument('--lr', type=float, default=1e-3, metavar='LR',
+parser.add_argument('--learning_rate', '-lr', type=float, default=1e-3, metavar='LR',
                     help='learning rate (default: 1e-3)')
-parser.add_argument('--gamma', type=float, default=0.99, metavar='G',
+parser.add_argument('--weight_decay', '-wd', default=1e-4, type=float,
+                    metavar='W', help='weight decay (default: 1e-4)')
+parser.add_argument('--gamma', '-g', type=float, default=0.99, metavar='G',
                     help='reward discount factor (default: 0.99)')
-parser.add_argument('--seed', type=int, default=30820172044, metavar='N',
+parser.add_argument('--seed', '-s', type=int, default=30820172044, metavar='N',
                     help='random seed (default: 30820172044)')
-parser.add_argument('--batch_size', type=int, default=10, metavar='N',
+parser.add_argument('--batch_size', '-bs', type=int, default=10, metavar='N',
                     help='update after N games (default: 10)')
-parser.add_argument('--render', action='store_true', default=False,
+parser.add_argument('--render', '-r', action='store_true', default=False,
                     help='render the environment')
-parser.add_argument('--plot_env', action='store_true', default=False,
+parser.add_argument('--plot_env', '-pe', action='store_true', default=False,
                     help='plot preprocessed environment')
-parser.add_argument('--force_cpu', action='store_true', default=False,
+parser.add_argument('--force_cpu', '-fc', action='store_true', default=False,
                     help='force use of cpu for computation')
-parser.add_argument('--save_each', type=int, default=100, metavar='N',
+parser.add_argument('--save_each', '-se', type=int, default=100, metavar='N',
                     help='save model each N episodes (default: 100)')
-parser.add_argument('--save_path', type=str, default='.', metavar='<dir>',
+parser.add_argument('--save_dir', '-sd', type=str, default='.', metavar='<dir>',
                     help='indicates directory where to save model \
                     (default: current directory)')
-parser.add_argument('--load_model', type=str, default='', metavar='<path>',
+parser.add_argument('--load_model', '-lm', type=str, default='', metavar='<path>',
                     help='indicates model to load and continue learning \
                     (default: start with "Xavier" initialization)')
 HPARAMS = parser.parse_args()
@@ -153,7 +155,11 @@ if HPARAMS.load_model != '':
 if use_cuda:
     policy.cuda()
 
-optimizer = optim.RMSprop(policy.parameters(), HPARAMS.lr)
+optimizer = optim.RMSprop(
+    policy.parameters(),
+    lr=HPARAMS.learning_rate,
+    weight_decay=HPARAMS.weight_decay
+)
 optimizer.zero_grad()
 
 observation = env.reset()
