@@ -29,6 +29,23 @@ Along the road, article for Gradient research circle website should emerge.
 
 There will be created group on Mendeley where collaborators will be able to share papers.
 
+# Directions
+
+After straightforward PG agent is done, we plan to explore those topics:
+
+* [ ] Actor-critic agent:
+
+    Reading:  
+    * [Deterministic Policy Gradient Algorithms](http://proceedings.mlr.press/v32/silver14.pdf)
+    * [Sample Efficient Actor-Critic with Experience Replay](https://arxiv.org/pdf/1611.01224.pdf)
+      
+* [ ] Imagination augmented agent:
+
+    Reading:  
+    * [Agents that imagine and plan](https://deepmind.com/blog/agents-imagine-and-plan/)
+    * [Learning model-based planning from scratch](https://arxiv.org/pdf/1707.06170.pdf)
+    * [Imagination-Augmented Agents for Deep Reinforcement Learning](https://arxiv.org/pdf/1707.06203.pdf)
+
 ---
 
 _This is Gradient research circle project. Our website: http://gradient.eti.pg.gda.pl/_
