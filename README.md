@@ -10,10 +10,10 @@ Along the road, article for Gradient research circle website should emerge.
 
 ```
 .
-├── doc (Article related files.)
+├── doc (Article, presentations etc. related files.)
 ├── etc (Other files related to project e.g. papers.)
 │   └── Deep Reinforcement Learning: Pong from Pixels.pdf
-├── README.md (This file. Targets, tasks, descritptions etc.)
+├── README.md (This file. Organization, targets, tasks, descritptions etc.)
 └── src (All experiments live here.)
     ├── checkpoints (Saved models etc.)
     ├── codebase    (Classes, helpers, utils etc.)
@@ -29,4 +29,6 @@ Along the road, article for Gradient research circle website should emerge.
 
 There will be created group on Mendeley where collaborators will be able to share papers.
 
-_This is Gradient research circle project. Out website: http://gradient.eti.pg.gda.pl/_
+---
+
+_This is Gradient research circle project. Our website: http://gradient.eti.pg.gda.pl/_
