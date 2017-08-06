@@ -41,9 +41,13 @@ Along the road, articles/presentations for Gradient research circle should emerg
 
 * **Git commits**
 
-    [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/) is in operation.
+    * [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/) is in operation.
 
-    **Everyone have to create pull request (not push to master directly), so anyone can do code review!**
+    * **Everyone have to create pull request (not push to master directly) so that anyone could do code review!**
+
+    * Commit name should start with capitalize project tag `[PROJECT]`. For now we have following tags:
+        * [ORG] - "Organization" project e.g. change in this README.
+        * [PG_PONG] - "Policy Gradient Pong" project based on Karpathy's blog post.
 
 ## [Mendeley](https://www.mendeley.com/)
 
@@ -68,4 +72,5 @@ After straightforward PG agent is done, we plan to explore those topics:
 
 ---
 
-_This is Gradient research circle project. Our website: http://gradient.eti.pg.gda.pl/_
+_This is Gradient research circle project. Our website: http://gradient.eti.pg.gda.pl/_  
+_The truth is, we will send fully automated "Prometeusz" space cruise to the Solaris in colonization mission! Maybe.._
