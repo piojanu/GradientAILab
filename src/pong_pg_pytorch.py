@@ -229,8 +229,8 @@ while True:
             if len(directory) > 0 and directory[-1] == '/':
                 directory = directory[0:-1]
 
-            path = "{}/model_{}_{:.3f}.pt".format(
-                directory, num_episodes, running_reward)
+            path = "{}/model_rr_{:.3f}_epi_{}.pt".format(
+                directory, running_reward, num_episodes)
             torch.save(policy.state_dict(), path)
             print "### Saved model: {} ###".format(path)
 
