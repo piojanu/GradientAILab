@@ -225,7 +225,7 @@ while True:
             .format(num_episodes, datetime.now().strftime('%H:%M:%S'),
                     int(reward_sum), running_reward)
         if num_episodes % HPARAMS.save_each == 0:
-            directory = HPARAMS.save_path
+            directory = HPARAMS.save_dir
             if len(directory) > 0 and directory[-1] == '/':
                 directory = directory[0:-1]
 
