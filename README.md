@@ -49,9 +49,12 @@ Along the road, articles/presentations for Gradient research circle should emerg
         * [ORG] - "Organization" project e.g. change in this README.
         * [PG_PONG] - "Policy Gradient Pong" project based on Karpathy's blog post.
 
-## [Mendeley](https://www.mendeley.com/)
+    * Remote branch names should follow those templates:
 
-There will be created group on Mendeley where collaborators will be able to share papers.
+        * Dev branches: `dev/<project tag>/<user name>/<your branch name>`
+        * Project branches: `proj/<project tag>/<branch name e.g. master>`
+
+        Project branches will be merged to origin/master each milestone.
 
 # Directions
 
@@ -69,6 +72,11 @@ After straightforward PG agent is done, we plan to explore those topics:
     * [Agents that imagine and plan](https://deepmind.com/blog/agents-imagine-and-plan/)
     * [Learning model-based planning from scratch](https://arxiv.org/pdf/1707.06170.pdf)
     * [Imagination-Augmented Agents for Deep Reinforcement Learning](https://arxiv.org/pdf/1707.06203.pdf)
+
+* [ ] Run and leap - Terrain-Adaptive Locomotion Skills:
+
+    Reading:
+    * [Terrain-Adaptive Locomotion Skills Using Deep Reinforcement Learning](https://www.cs.ubc.ca/~van/papers/2016-TOG-deepRL/index.html)
 
 ---
 
