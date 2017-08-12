@@ -11,18 +11,18 @@ Along the road, articles/presentations for Gradient research circle should emerg
 ```
 .
 ├── doc (Articles/presentations related files, experiments descriptions/results etc.)
+│   └── project_dir (As `doc` but specific to some project.)
 ├── etc (Other files related to project e.g. papers.)
-│   └── Deep Reinforcement Learning: Pong from Pixels.pdf
 ├── README.md (This file. Organization, targets, tasks, descritptions etc.)
 └── src (All experiments live here.)
     ├── checkpoints (Saved models etc.)
     ├── codebase    (Classes, helpers, utils etc.)
     ├── logs        (All the logging related files.)
     ├── out         (All side products of scripts that don't fit anywhere else.)
-    ├── third_party (As `codebase` but from third_party.)
-    │   └── pg-pong.py
-    └── script1.py  (All scripts performing experiments live in `src`.)
-    
+    ├── third_party (As `codebase` + scripts but from third_party.)
+    ├── script1.py  (All scripts performing experiments live in `src`.)
+    └── project_dir (As `src` but specific to some project.)
+
 ```
 
 ## Coding standards
