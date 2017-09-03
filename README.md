@@ -65,6 +65,9 @@ After straightforward PG agent is done, we plan to explore those topics:
     Reading:  
     * [Deterministic Policy Gradient Algorithms](http://proceedings.mlr.press/v32/silver14.pdf)
     * [Sample Efficient Actor-Critic with Experience Replay](https://arxiv.org/pdf/1611.01224.pdf)
+    
+    Extra for asynchronous actor-critic (A3C):
+    * [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783v2)
       
 * [ ] Imagination augmented agent:
 
