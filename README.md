@@ -48,6 +48,8 @@ Along the road, articles/presentations for Gradient research circle should emerg
     * Commit name should start with capitalize project tag `[PROJECT]`. For now we have following tags:
         * [ORG] - "Organization" project e.g. change in this README.
         * [PG_PONG] - "Policy Gradient Pong" project based on Karpathy's blog post.
+        * [Q_LEARN] - "Introduction to TD-Learning and Q-Learning algorithm" project.
+        * [HUMAN_PREF] - "Jumping Jack" project i.e. learning agent to jump based on human preferences.
 
     * Remote branch names should follow those templates:
 
@@ -58,7 +60,17 @@ Along the road, articles/presentations for Gradient research circle should emerg
 
 # Directions
 
-After straightforward PG agent is done, we plan to explore those topics:
+* [X] Stochastic Policy Gradients:
+
+    Reading:
+    * [Deep Reinforcement Learning: Pong from Pixels](http://karpathy.github.io/2016/05/31/rl/)
+
+* [ ] Learning from Human Preferences:  
+    (Currently studied by Piotr J. in his project "Jumping Jack")
+    
+    Reading:
+    * [OpenAI Blog: Learning from Human Preferences](https://blog.openai.com/deep-reinforcement-learning-from-human-preferences/)
+    * [Learning from Human Preferences](https://arxiv.org/abs/1706.03741v3)
 
 * [ ] Actor-critic agent:
 
