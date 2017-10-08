@@ -81,12 +81,16 @@ Along the road, articles/presentations for Gradient research circle should emerg
     Extra for asynchronous actor-critic (A3C):
     * [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783v2)
       
-* [ ] Imagination augmented agent:
+* [ ] Imagination augmented agents and Schema Networks:
 
-    Reading:  
+    Reading about "Imagination":  
     * [Agents that imagine and plan](https://deepmind.com/blog/agents-imagine-and-plan/)
     * [Learning model-based planning from scratch](https://arxiv.org/pdf/1707.06170.pdf)
     * [Imagination-Augmented Agents for Deep Reinforcement Learning](https://arxiv.org/pdf/1707.06203.pdf)
+
+    Reading about "Schema Networks":
+    * [General Game Playing with Schema Networks](https://www.vicarious.com/general-game-playing-with-schema-networks.html)
+    * [Schema Networks: Zero-shot Transfer with a Generative Causal Model of Intuitive Physics](https://arxiv.org/abs/1706.04317)
 
 * [ ] Run and leap - Terrain-Adaptive Locomotion Skills:
 
