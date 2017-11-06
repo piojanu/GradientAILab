@@ -4,7 +4,7 @@ In this project we want to explore reinforcement learning techniques in deep lea
 Starting from reproducing his work, we will further develop better agents for common reinforcement learning tasks and eventually start whole new projects based on gained experience.  
 Along the road, articles/presentations for Gradient research circle should emerge.
 
-# How to start AI&RL journey?
+## How to start AI&RL journey?
 
 0. Of course some background in artificial neural networks to start with Deep Reinforcement Learning.
 1. Artificial Intelligence grounding:
@@ -23,9 +23,9 @@ Along the road, articles/presentations for Gradient research circle should emerg
         * [Reinforcement Learning Summer School](http://videolectures.net/deeplearning2017_montreal/)
         * [CS 294: Deep Reinforcement Learning](http://rll.berkeley.edu/deeprlcourse/)
 
-# Repository organization
+## Repository organization
 
-## Directory tree
+### Directory tree
 
 ```
 .
@@ -44,7 +44,7 @@ Along the road, articles/presentations for Gradient research circle should emerg
 
 ```
 
-## Coding standards
+### Coding standards
 
 * **Python**
 
@@ -76,7 +76,7 @@ Along the road, articles/presentations for Gradient research circle should emerg
 
         Project branches will be merged to origin/master each milestone.
 
-# Directions
+## Directions
 
 * [X] Stochastic Policy Gradients:
 
