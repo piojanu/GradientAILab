@@ -4,6 +4,25 @@ In this project we want to explore reinforcement learning techniques in deep lea
 Starting from reproducing his work, we will further develop better agents for common reinforcement learning tasks and eventually start whole new projects based on gained experience.  
 Along the road, articles/presentations for Gradient research circle should emerge.
 
+# How to start AI&RL journey?
+
+0. Of course some background in artificial neural networks to start with Deep Reinforcement Learning.
+1. Artificial Intelligence grounding:
+    * Berkeley cs188 course ([on edXedge](https://edge.edx.org/courses/course-v1%3ABerkeley%2BCS188%2BSP17/)):
+        * [Uncertainty and Utilities](https://www.youtube.com/watch?time_continue=15&v=GevK0-9n24g)
+        * [MDP part I](https://www.youtube.com/watch?v=Oxqwwnm_x0s&t=4034s) and [MDP part II](https://www.youtube.com/watch?v=6pBvbLyn6fE&t=847s)
+        * [Reinforcement Learning part I](https://www.youtube.com/watch?v=IXuHxkpO5E8) and [Reinforcement Learning part II](https://www.youtube.com/watch?v=yNeSFbE1jdY)
+    * Book [Artificial Intelligence: A Modern Approach (3rd Edition)](https://dcs.abu.edu.ng/staff/abdulrahim-abdulrazaq/courses/cosc208/Artificial%20Intelligence%20A%20Modern%20Approach%20(3rd%20Edition).pdf):
+        * Ch. 16.1 - 16.3
+        * Ch. 17.1 - 17.3
+        * Ch. 21
+2. Deep Reinforcement Learning:
+    * Book [Reinforcement Learning: An Introduction (2nd Edition Draft)](http://ufal.mff.cuni.cz/~straka/courses/npfl114/2016/sutton-bookdraft2016sep.pdf)
+    * Courses (personally I watch (and do assignments from) Deep RL Bootcamp and watch some talks from RL Summer School):
+        * [Deep RL Bootcamp](https://sites.google.com/view/deep-rl-bootcamp/home)
+        * [Reinforcement Learning Summer School](http://videolectures.net/deeplearning2017_montreal/)
+        * [CS 294: Deep Reinforcement Learning](http://rll.berkeley.edu/deeprlcourse/)
+
 # Repository organization
 
 ## Directory tree
@@ -24,25 +43,6 @@ Along the road, articles/presentations for Gradient research circle should emerg
     └── project_dir (As `src` but specific to some project.)
 
 ```
-
-## How to start AI&RL journey?
-
-0. Of course some background in artificial neural networks to start with Deep Reinforcement Learning.
-1. Artificial Intelligence grounding:
-    * Berkeley cs188 course ([on edXedge](https://edge.edx.org/courses/course-v1%3ABerkeley%2BCS188%2BSP17/)):
-        * [Uncertainty and Utilities](https://www.youtube.com/watch?time_continue=15&v=GevK0-9n24g)
-        * [MDP part I](https://www.youtube.com/watch?v=Oxqwwnm_x0s&t=4034s) and [MDP part II](https://www.youtube.com/watch?v=6pBvbLyn6fE&t=847s)
-        * [Reinforcement Learning part I](https://www.youtube.com/watch?v=IXuHxkpO5E8) and [Reinforcement Learning part II](https://www.youtube.com/watch?v=yNeSFbE1jdY)
-    * Book [Artificial Intelligence: A Modern Approach (3rd Edition)](https://dcs.abu.edu.ng/staff/abdulrahim-abdulrazaq/courses/cosc208/Artificial%20Intelligence%20A%20Modern%20Approach%20(3rd%20Edition).pdf):
-        * Ch. 16.1 - 16.3
-        * Ch. 17.1 - 17.3
-        * Ch. 21
-2. Deep Reinforcement Learning:
-    * Book [Reinforcement Learning: An Introduction (2nd Edition Draft)](http://ufal.mff.cuni.cz/~straka/courses/npfl114/2016/sutton-bookdraft2016sep.pdf)
-    * Courses (personally I watch (and do assignments from) Deep RL Bootcamp and watch some talks from RL Summer School):
-        * [Deep RL Bootcamp](https://sites.google.com/view/deep-rl-bootcamp/home)
-        * [Reinforcement Learning Summer School](http://videolectures.net/deeplearning2017_montreal/)
-        * [CS 294: Deep Reinforcement Learning](http://rll.berkeley.edu/deeprlcourse/)
 
 ## Coding standards
 
