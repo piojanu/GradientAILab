@@ -25,22 +25,23 @@ Along the road, articles/presentations for Gradient research circle should emerg
 
 ## Repository organization
 
-### Directory tree
+### _(Preferred)_ Directory tree
 
 ```
 .
-├── doc (Articles/presentations related files, experiments descriptions/results etc.)
-│   └── project_dir (As `doc` but specific to some project.)
-├── etc (Other files related to project e.g. papers.)
 ├── README.md (This file. Organization, targets, tasks, descritptions etc.)
-└── src (All experiments live here.)
-    ├── checkpoints (Saved models etc.)
-    ├── codebase    (Classes, helpers, utils etc.)
-    ├── logs        (All the logging related files.)
-    ├── out         (All side products of scripts that don't fit anywhere else.)
-    ├── third_party (As `codebase` + scripts but from third_party.)
-    ├── script1.py  (All scripts performing experiments live in `src`.)
-    └── project_dir (As `src` but specific to some project.)
+├── etc (Other resources related to reinforcement learning in general e.g. papers)
+└── <project name> 
+    ├── README.md (Project description, organization, milestones etc.)
+    ├── doc (Articles, presentations, experiments descriptions and results etc.)
+    ├── etc (Other resources related to project e.g. papers, diagrams etc.)
+    └── src (All experiments live here.)
+        ├── checkpoints (Saved models etc.)
+        ├── codebase    (Classes, helpers, utils etc.)
+        ├── logs        (All the logging related files.)
+        ├── out         (All side products of scripts that don't fit anywhere else.)
+        ├── third_party (As `codebase` + scripts but from third party.)
+        └── script1.py  (All scripts performing experiments live in `src`.)
 
 ```
 
