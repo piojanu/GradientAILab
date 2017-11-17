@@ -1,12 +1,24 @@
-# AtariAI
+<p align="center"><img width="600" height="240" src ="etc/logo.jpg" /></p>
+
+---
+
+## What is it all about?
 
 In this project we want to explore reinforcement learning techniques in deep learning. Our baseline is experiment presented by Andrej Karpathy on his [blog](http://karpathy.github.io/2016/05/31/rl/). You can find his post in `<project root>/etc` directory. His work is about lightweight Policy Gradient agent.  
-Starting from reproducing his work, we will further develop better agents for common reinforcement learning tasks and eventually start whole new projects based on gained experience.  
-Along the road, articles/presentations for Gradient research circle should emerge.
+Starting from reproducing his work, we now go further developing better agents for reinforcement learning tasks we find interesting. Eventually, we will start whole new projects based on gained experience.  
+Along the road, articles/presentations for Gradient research circle and further should emerge.
 
 ## How to start AI&RL journey?
 
-0. Of course some background in artificial neural networks to start with Deep Reinforcement Learning.
+Do you want to start to work with Artificial Intelligence? Don't be scared! You just need some basic programming skills and great desire to learn and create incredible things :) We will find some tailor-made task for you. Contact us now!
+
+### Here you have some theoretical materials about DRL and ANNs to start with:
+
+0. Of course some background in Artificial Neural Networks:
+    * [Great introduction to theory behind Neural Networks from 3Blue1Brown](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi)
+    * Fantastic classes about "Convolutional Neural Networks for Visual Recognition":
+        * [Lectures videos](https://www.youtube.com/playlist?list=PLkt2uSq6rBVctENoVBg1TpCC7OQi31AlC)
+        * [Notes, assignments etc.](http://cs231n.github.io/)
 1. Artificial Intelligence grounding:
     * Berkeley cs188 course ([on edXedge](https://edge.edx.org/courses/course-v1%3ABerkeley%2BCS188%2BSP17/)):
         * [Uncertainty and Utilities](https://www.youtube.com/watch?time_continue=15&v=GevK0-9n24g)
