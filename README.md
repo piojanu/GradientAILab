@@ -63,7 +63,7 @@ Along the road, articles/presentations for Gradient research circle and further 
 
     [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/) is in operation.
     
-    If you are emacs user I recommend installing this package: py-autopep8. Configuration:  
+    If you are emacs user, I recommend installing this package: py-autopep8. Configuration:  
     ```elisp
     ;; enable autopep8 formatting on save
     (require 'py-autopep8)
