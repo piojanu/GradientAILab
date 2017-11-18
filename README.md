@@ -89,42 +89,46 @@ Along the road, articles/presentations for Gradient research circle and further 
 
         Project branches will be merged to origin/master each milestone.
 
-## Directions
+## Directions to explore
 
 * [X] Stochastic Policy Gradients:
 
-    Reading:
+    Reading:  
     * [Deep Reinforcement Learning: Pong from Pixels](http://karpathy.github.io/2016/05/31/rl/)
+
+* [ ] Continuous control of roboarm and/or hovering rocket:
+
+    Reading about continuous control:  
+    * [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783v2)
+    * [High-Dimensional Continuous Control Using Generalized Advantage Estimation](https://arxiv.org/abs/1506.02438)
+    * [Continuous control with deep reinforcement learning](https://arxiv.org/abs/1509.02971)
+    
+    Reading about learning robots:  
+    * [Asymmetric Actor Critic for Image-Based Robot Learning](https://arxiv.org/abs/1710.06542)
+    * [One-Shot Imitation Learning](https://arxiv.org/abs/1703.07326)
+    * [Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World](https://arxiv.org/abs/1703.06907)
+    * [Sim-to-Real Transfer of Robotic Control with Dynamics Randomization](https://arxiv.org/abs/1710.06537)
 
 * [ ] Learning from Human Preferences:  
     
     Reading:
     * [OpenAI Blog: Learning from Human Preferences](https://blog.openai.com/deep-reinforcement-learning-from-human-preferences/)
     * [Learning from Human Preferences](https://arxiv.org/abs/1706.03741v3)
-
-* [ ] Actor-critic agent:
-
-    Reading:  
-    * [Deterministic Policy Gradient Algorithms](http://proceedings.mlr.press/v32/silver14.pdf)
-    * [Sample Efficient Actor-Critic with Experience Replay](https://arxiv.org/pdf/1611.01224.pdf)
-    
-    Extra for asynchronous actor-critic (A3C):
-    * [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783v2)
       
-* [ ] Imagination augmented agents and Schema Networks:
+* [ ] Planning and reasoning about the future:
 
-    Reading about "Imagination":  
+    Reading about imagination augmentation:  
     * [Agents that imagine and plan](https://deepmind.com/blog/agents-imagine-and-plan/)
     * [Learning model-based planning from scratch](https://arxiv.org/pdf/1707.06170.pdf)
     * [Imagination-Augmented Agents for Deep Reinforcement Learning](https://arxiv.org/pdf/1707.06203.pdf)
 
-    Reading about "Schema Networks":
+    Reading about "Schema Networks":  
     * [General Game Playing with Schema Networks](https://www.vicarious.com/general-game-playing-with-schema-networks.html)
     * [Schema Networks: Zero-shot Transfer with a Generative Causal Model of Intuitive Physics](https://arxiv.org/abs/1706.04317)
 
-* [ ] Run and leap - Terrain-Adaptive Locomotion Skills:
+* [ ] Robofish in simulated aquarium:
 
-    Reading:
+    Reading:  
     * [Terrain-Adaptive Locomotion Skills Using Deep Reinforcement Learning](https://www.cs.ubc.ca/~van/papers/2016-TOG-deepRL/index.html)
 
 ---
