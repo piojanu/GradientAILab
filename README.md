@@ -1,4 +1,4 @@
-<p align="center"><img width="600" height="240" src ="etc/logo.jpg" /></p>
+<p align="center"><img width="600" height="240" src ="etc/logo.png" /></p>
 
 ---
 
