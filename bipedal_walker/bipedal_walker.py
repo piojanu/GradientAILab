@@ -125,6 +125,9 @@ if __name__ == '__main__':
 
     optimizer = optim.RMSprop(model.parameters())
 
+    reward_his = np.zeros(NUM_EPISODES)
+    steps_his = np.zeros(NUM_EPISODES)
+
     for episode in range(NUM_EPISODES):
         env.reset()
         action_vec = env.action_space.sample()
@@ -147,9 +150,11 @@ if __name__ == '__main__':
             #Executing step according to our action
             obs, reward, done, info = env.step(action_vec)
 
+
             #Updating states
             previous_state = current_state
             if done is False:
+                reward_his[episode] += reward
                 current_state = get_state(obs)
             else:
                 current_state = None
@@ -162,5 +167,6 @@ if __name__ == '__main__':
             update_model(model,transition_buffer,optimizer)
 
             if done is True:
-                print("Episode",episode,", steps = ", i)
+                steps_his[episode] = i
+                print("Episode",episode,", steps = ", i, ", total reward:", reward_his[episode], ",steps_avg",np.mean(steps_his[:episode+1]),",reward_avg",np.mean(reward_his[:episode+1]))
                 break
