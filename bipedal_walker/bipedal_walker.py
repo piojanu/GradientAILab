@@ -7,16 +7,20 @@ import matplotlib.pyplot as plt
 import torch.nn.functional as F
 import numpy as np
 import torch.optim as optim
+import random
 
 ByteTensor = torch.ByteTensor
 
-NUM_EPISODES = 50
+NUM_EPISODES = 500
 SCREEN_WIDTH = 400
 SCREEN_LENGTH =600
 WINDOW_MAX_Y = 300
 WINDOW_MIN_Y = 200
 BATCH_SIZE = 100
 GAMMA = 0.9
+EPS_START = 0.9
+EPS_END = 0.05
+EPS_DECAY = 200
 
 Transition = namedtuple("Transition", ("state", "action", "reward", "next_state"))
 
@@ -36,7 +40,8 @@ class DQN(nn.Module):
 class TransitionBuffer:
     def __init__(self):
         self.buffer = []
-
+        for i in range(BATCH_SIZE):
+            self.buffer.append([get_state(np.zeros(24)),torch.FloatTensor([0]),torch.FloatTensor([0]),get_state(np.zeros(24))])
 
     def push(self,transition):
         self.buffer.append(transition)
@@ -53,32 +58,40 @@ def update_model(model, transition_buffer,optimizer):
     states,actions,rewards,next_states = transition_buffer.get_batch()
 
     non_final_mask = [i for i,state in enumerate(next_states) if state is not None]
-
+    non_final_mask = torch.LongTensor(non_final_mask)
     # We don't want to backprop through the expected action values and volatile
     # will save us on temporarily changing the model parameters'
     # requires_grad to False!
-    non_final_next_states = Variable(torch.cat([s for s in next_states if s is not None]), volatile=True)
+    non_final_next_states = Variable(torch.cat([s for s in next_states if s is not None]).view(-1,24), volatile=True)
 
-    states = Variable(torch.cat(list(states)))
-    actions = Variable(torch.cat(list(actions)))
+    #print(non_final_next_states)
+
+    states = Variable(torch.cat(list(states)).view(-1,24))
+    actions = Variable(torch.cat(list(actions)).view(-1,1).type(torch.LongTensor))
     rewards = Variable(torch.cat(list(rewards)))
+
+    #print("States:",states,", actions:",actions,", rewards:",rewards)
 
     # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
     # columns of actions taken
     q_values = model(states).gather(1, actions)
+    #print("Qvals:",q_values)
 
     # Compute V(s_{t+1}) for all next states.
     next_state_values = Variable(torch.zeros(BATCH_SIZE).type(torch.Tensor))
+
     next_state_values[non_final_mask] = model(non_final_next_states).max(1)[0]
+
     # Now, we don't want to mess up the loss with a volatile flag, so let's
     # clear it. After this, we'll just end up with a Variable that has
     # requires_grad=False
     next_state_values.volatile = False
+
     # Compute the expected Q values
-    expected_state_action_values = (next_state_values * GAMMA) + reward_batch
+    expected_state_action_values = (next_state_values * GAMMA) + rewards
 
     # Compute Huber loss
-    loss = F.smooth_l1_loss(state_action_values, expected_state_action_values)
+    loss = F.smooth_l1_loss(q_values, expected_state_action_values)
 
     # Optimize the model
     optimizer.zero_grad()
@@ -93,8 +106,9 @@ def get_state(obs):
 
 #Returns the index of the action with max value according to our DQN model
 def get_action(model,state):
-    output = model(state).data.max(0)[1]
-    return int(output.numpy()[0])
+    #chance = random.random()
+    #if chance >
+    return int(model(state).data.max(0)[1].numpy()[0])
 
 def get_action_vec(action_ind):
     #Getting binary vector of action ie. 9 is 1001
@@ -128,14 +142,17 @@ if __name__ == '__main__':
             #Getting action for each joint, 4 values {-1,1}
             action_vec = get_action_vec(action_ind)
 
-            print("action_id =",action_ind,", action vec =",action_vec)
+            #print("action_id =",action_ind,", action vec =",action_vec)
 
             #Executing step according to our action
             obs, reward, done, info = env.step(action_vec)
 
             #Updating states
             previous_state = current_state
-            current_state = get_state(obs)
+            if done is False:
+                current_state = get_state(obs)
+            else:
+                current_state = None
 
             #Storing transition
             transition_buffer.push([previous_state,torch.FloatTensor([action_ind]),torch.FloatTensor([reward]),current_state])
@@ -145,4 +162,5 @@ if __name__ == '__main__':
             update_model(model,transition_buffer,optimizer)
 
             if done is True:
+                print("Episode",episode,", steps = ", i)
                 break
