@@ -11,6 +11,9 @@ install Box2D<br>
 -conda install -c https://conda.anaconda.org/kne pybox2d <br><br>
 
 Please notice that for the Box2D install command to work, your default python has to be the same as for conda.<br>
+
+![Alt Text](https://github.com/PiotrSobczak/GradientAILab/blob/master/bipedal_walker/assets/walker.gif)
+
 For more details about BipedalWalker-v2 environment visit: https://github.com/openai/gym/wiki/BipedalWalker-v2
 
 
