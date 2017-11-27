@@ -141,11 +141,16 @@ if __name__ == '__main__':
             action_ind = get_action(model,Variable(current_state, volatile=True))
 
             #Getting action for each joint, 4 values {-1,1}
-            action_vec = get_action_vec(action_ind)
+            #Forcing the walker to fall in particular position
+            if i > 20:
+                action_vec = get_action_vec(action_ind)
+            else:
+                action_vec = np.array([1,-1,-1,-1])
 
             #print("action_id =",action_ind,", action vec =",action_vec)
 
             #Executing step according to our action
+            #obs, reward, done, info = env.step(action_vec)
             obs, reward, done, info = env.step(action_vec)
 
             if done is False:
