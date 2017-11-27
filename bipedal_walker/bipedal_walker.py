@@ -53,7 +53,7 @@ class TransitionBuffer:
         return list(zip(*self.buffer))
 
 
-def update_model(model, transition_buffer,optimizer):
+def update_model(transition_buffer,optimizer):
     # Compute a mask of non-final states and concatenate the batch elements
     states,actions,rewards,next_states = transition_buffer.get_batch()
 
@@ -132,9 +132,7 @@ if __name__ == '__main__':
         env.reset()
         action_vec = env.action_space.sample()
 
-        previous_state = get_state(np.zeros(24))
         current_state = get_state(np.zeros(24))
-
         for i in count():
             #Rendering screen
             env.render(mode='rgb_array')
@@ -150,21 +148,20 @@ if __name__ == '__main__':
             #Executing step according to our action
             obs, reward, done, info = env.step(action_vec)
 
-
-            #Updating states
-            previous_state = current_state
             if done is False:
+                next_state = get_state(obs)
                 reward_his[episode] += reward
-                current_state = get_state(obs)
             else:
-                current_state = None
+                next_state = None
 
             #Storing transition
-            transition_buffer.push([previous_state,torch.FloatTensor([action_ind]),torch.FloatTensor([reward]),current_state])
-            transition_buffer.push([previous_state, torch.FloatTensor([action_ind]), torch.FloatTensor([reward]), current_state])
+            transition_buffer.push([current_state,torch.FloatTensor([action_ind]),torch.FloatTensor([reward]),next_state])
+
+            #Updating states
+            current_state = next_state
 
             #Updating model
-            update_model(model,transition_buffer,optimizer)
+            update_model(transition_buffer,optimizer)
 
             if done is True:
                 steps_his[episode] = i
