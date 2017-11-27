@@ -11,16 +11,14 @@ import random
 
 ByteTensor = torch.ByteTensor
 
-NUM_EPISODES = 500
+NUM_EPISODES = 1000
 SCREEN_WIDTH = 400
 SCREEN_LENGTH =600
 WINDOW_MAX_Y = 300
 WINDOW_MIN_Y = 200
-BATCH_SIZE = 100
+BATCH_SIZE = 1000
 GAMMA = 0.9
-EPS_START = 0.9
-EPS_END = 0.05
-EPS_DECAY = 200
+EXPLORE_RATIO = 0.2
 
 Transition = namedtuple("Transition", ("state", "action", "reward", "next_state"))
 
@@ -106,9 +104,11 @@ def get_state(obs):
 
 #Returns the index of the action with max value according to our DQN model
 def get_action(model,state):
-    #chance = random.random()
-    #if chance >
-    return int(model(state).data.max(0)[1].numpy()[0])
+    chance = random.random()
+    if chance > EXPLORE_RATIO:
+        return int(model(state).data.max(0)[1].numpy()[0])
+    else:
+        return random.randint(0, 15)
 
 def get_action_vec(action_ind):
     #Getting binary vector of action ie. 9 is 1001
