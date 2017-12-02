@@ -141,7 +141,7 @@ Do you have your own project/idea or want to join one of our projects? **[Contac
     
 # Contact us now
 ### Administrator:
-Piotr Januszewski
+Piotr Januszewski  
 piojanuszewski@gmail.com
 
 ---
