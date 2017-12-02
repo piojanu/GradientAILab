@@ -8,11 +8,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;Starting from reproduction of his work, we now go further developing better agents for reinforcement learning tasks we find interesting. Eventually, we will start whole new projects based on gained experience.  
 Along the road, articles/presentations for Gradient research circle and further should emerge.
 
-Do you have your own project/idea or want to join one of our projects? **[Contact us now](#contact-us-now)!** Do you want to start working on AI? [Read further](#how-to-start-ai&rl-journey).
+Do you have your own project/idea or want to join one of our projects? **[Contact us now](#contact-us-now)**! Do you want to start working on AI? Read further!
 
 ## How to start AI&RL journey?
 
-&nbsp;&nbsp;&nbsp;&nbsp;Do you want to start to work with Artificial Intelligence? Don't be scared! You just need some basic programming skills and great desire to learn and create incredible things :) We will find some tailor-made task for you. **[Contact us now](#contact-us-now)!**
+&nbsp;&nbsp;&nbsp;&nbsp;Do you want to start to work with Artificial Intelligence? Don't be scared! You just need some basic programming skills and great desire to learn and create incredible things :) We will find some tailor-made task for you. **[Contact us now](#contact-us-now)**!
 
 ### Here you have some theoretical materials about DRL and ANNs to start with:
 
@@ -64,8 +64,8 @@ Do you have your own project/idea or want to join one of our projects? **[Contac
 * **README**
 
     Each project has to have it's own README. Here you can find how to write one:
-    * https://open-source-guide.18f.gov/making-readmes-readable/
-    * https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
+    * [Making READMEs readable](https://open-source-guide.18f.gov/making-readmes-readable/)
+    * [README-Template.md by Billie Thompson](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
 
 * **Python**
 
@@ -140,7 +140,7 @@ Do you have your own project/idea or want to join one of our projects? **[Contac
     * [Terrain-Adaptive Locomotion Skills Using Deep Reinforcement Learning](https://www.cs.ubc.ca/~van/papers/2016-TOG-deepRL/index.html)
     
 # Contact us now
-## Administrator:
+### Administrator:
 Piotr Januszewski
 piojanuszewski@gmail.com
 
