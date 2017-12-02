@@ -4,13 +4,15 @@
 
 ## What is it all about?
 
-&nbsp;&nbsp;&nbsp;&nbsp;In this project we want to explore reinforcement learning techniques in deep learning. Our baseline is experiment presented by Andrej Karpathy on his [blog](http://karpathy.github.io/2016/05/31/rl/). You can find his post in `<project root>/etc` directory. His work is about lightweight Policy Gradient agent.  
-&nbsp;&nbsp;&nbsp;&nbsp;Starting from reproducing his work, we now go further developing better agents for reinforcement learning tasks we find interesting. Eventually, we will start whole new projects based on gained experience.  
+&nbsp;&nbsp;&nbsp;&nbsp;In this project we want to explore reinforcement learning techniques in deep learning. Our baseline is experiment presented by Andrej Karpathy on his [blog](http://karpathy.github.io/2016/05/31/rl/). You can find his post in `pg_pong/etc` directory. It's about lightweight Policy Gradient agent.  
+&nbsp;&nbsp;&nbsp;&nbsp;Starting from reproduction of his work, we now go further developing better agents for reinforcement learning tasks we find interesting. Eventually, we will start whole new projects based on gained experience.  
 Along the road, articles/presentations for Gradient research circle and further should emerge.
+
+Do you have your own project/idea or want to join one of our projects? **[Contact us now](#contact-us-now)!** Do you want to start working on AI? [Read further](#how-to-start-ai&rl-journey).
 
 ## How to start AI&RL journey?
 
-&nbsp;&nbsp;&nbsp;&nbsp;Do you want to start to work with Artificial Intelligence? Don't be scared! You just need some basic programming skills and great desire to learn and create incredible things :) We will find some tailor-made task for you. **Contact us now!**
+&nbsp;&nbsp;&nbsp;&nbsp;Do you want to start to work with Artificial Intelligence? Don't be scared! You just need some basic programming skills and great desire to learn and create incredible things :) We will find some tailor-made task for you. **[Contact us now](#contact-us-now)!**
 
 ### Here you have some theoretical materials about DRL and ANNs to start with:
 
@@ -30,7 +32,7 @@ Along the road, articles/presentations for Gradient research circle and further 
         * Ch. 21
 2. Deep Reinforcement Learning:
     * Book [Reinforcement Learning: An Introduction (2nd Edition Draft)](http://ufal.mff.cuni.cz/~straka/courses/npfl114/2016/sutton-bookdraft2016sep.pdf)
-    * Courses (personally I watch (and do assignments from) Deep RL Bootcamp and watch some talks from RL Summer School):
+    * Courses (personally I consider watching and doing assignments from Deep RL Bootcamp as a good start):
         * [Deep RL Bootcamp](https://sites.google.com/view/deep-rl-bootcamp/home)
         * [Reinforcement Learning Summer School](http://videolectures.net/deeplearning2017_montreal/)
         * [CS 294: Deep Reinforcement Learning](http://rll.berkeley.edu/deeprlcourse/)
@@ -57,7 +59,13 @@ Along the road, articles/presentations for Gradient research circle and further 
 
 ```
 
-### Coding standards
+### _(Not only)_ Coding standards
+
+* **README**
+
+    Each project has to have it's own README. Here you can find how to write one:
+    * https://open-source-guide.18f.gov/making-readmes-readable/
+    * https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
 
 * **Python**
 
@@ -130,6 +138,11 @@ Along the road, articles/presentations for Gradient research circle and further 
 
     Reading:  
     * [Terrain-Adaptive Locomotion Skills Using Deep Reinforcement Learning](https://www.cs.ubc.ca/~van/papers/2016-TOG-deepRL/index.html)
+    
+# Contact us now
+## Administrator:
+Piotr Januszewski
+piojanuszewski@gmail.com
 
 ---
 
