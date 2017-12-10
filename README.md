@@ -59,45 +59,6 @@ Do you have your own project/idea or want to join one of our projects? **[Contac
 
 ```
 
-### _(Not only)_ Coding standards
-
-* **README**
-
-    Each project has to have it's own README. Here you can find how to write one:
-    * [Making READMEs readable](https://open-source-guide.18f.gov/making-readmes-readable/)
-    * [README-Template.md by Billie Thompson](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-
-* **Python**
-
-    [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/) is in operation.
-    
-    If you are emacs user, I recommend installing this package: py-autopep8. Configuration:  
-    ```elisp
-    ;; enable autopep8 formatting on save
-    (require 'py-autopep8)
-    (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-    ```  
-    If you look for the best python/markdown/everything IDE and want to configure it easily, here is a guide for you: https://realpython.com/blog/python/emacs-the-best-python-editor/ and then http://jblevins.org/projects/markdown-mode/ .
-
-* **Git commits**
-
-    * [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/) is in operation.
-
-    * If you want to contribute to this repo: fork it, work on your project and then create a pull request. **Pull request is mandatory even for collaborators!**
-
-    * Commit name should start with capitalize project tag `[PROJECT]`. For now we have following tags:
-        * [ORG] - "Organization" project e.g. change in this README.
-        * [PG_PONG] - "Policy Gradient Pong" project based on Karpathy's blog post.
-        * [Q_LEARN] - "Introduction to TD-Learning and Q-Learning algorithm" project.
-        * [BIPEDAL] - Bipedal walker experiments project.
-
-    * If you work in this repo, remote branch names should follow those templates:
-
-        * Dev branches: `dev/<project tag>/<user name>/<your branch name>`
-        * Project branches: `proj/<project tag>/<branch name e.g. master>`
-
-        Project branches will be merged to origin/master each milestone.
-
 ## Directions to explore
 
 * [X] Stochastic Policy Gradients:
