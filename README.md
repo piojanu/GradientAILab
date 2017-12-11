@@ -59,6 +59,10 @@ Do you have your own project/idea or want to join one of our projects? **[Contac
 
 ```
 
+## Contribution guidelines
+
+_See CONTRIBUTING.md in root directory of this repo._
+
 ## Directions to explore
 
 * [X] Stochastic Policy Gradients:
