@@ -26,16 +26,21 @@ Do you have your own project/idea or want to join one of our projects? **[Contac
         * [Uncertainty and Utilities](https://www.youtube.com/watch?time_continue=15&v=GevK0-9n24g)
         * [MDP part I](https://www.youtube.com/watch?v=Oxqwwnm_x0s&t=4034s) and [MDP part II](https://www.youtube.com/watch?v=6pBvbLyn6fE&t=847s)
         * [Reinforcement Learning part I](https://www.youtube.com/watch?v=IXuHxkpO5E8) and [Reinforcement Learning part II](https://www.youtube.com/watch?v=yNeSFbE1jdY)
-    * Book [Artificial Intelligence: A Modern Approach (3rd Edition)](https://dcs.abu.edu.ng/staff/abdulrahim-abdulrazaq/courses/cosc208/Artificial%20Intelligence%20A%20Modern%20Approach%20(3rd%20Edition).pdf):
+    * Book [Artificial Intelligence: A Modern Approach (3rd Edition)](https://dcs.abu.edu.ng/staff/abdulrahim-abdulrazaq/courses/cosc208/Artificial%20Intelligence%20A%20Modern%20Approach%20(3rd%20Edition).pdf) (do some exercises too for better understanding):
         * Ch. 16.1 - 16.3
         * Ch. 17.1 - 17.3
         * Ch. 21
 2. Deep Reinforcement Learning:
     * Book [Reinforcement Learning: An Introduction (2nd Edition Draft)](http://ufal.mff.cuni.cz/~straka/courses/npfl114/2016/sutton-bookdraft2016sep.pdf)
-    * Courses (personally I consider watching and doing assignments from Deep RL Bootcamp as a good start):
-        * [Deep RL Bootcamp](https://sites.google.com/view/deep-rl-bootcamp/home)
-        * [Reinforcement Learning Summer School](http://videolectures.net/deeplearning2017_montreal/)
-        * [CS 294: Deep Reinforcement Learning](http://rll.berkeley.edu/deeprlcourse/)
+    * Courses:
+        * *Personally I would start with those lectures:*
+          * [Reinforcement Learning](http://videolectures.net/deeplearning2017_pineau_reinforcement_learning/)
+          * [Policy Search for RL](http://videolectures.net/deeplearning2017_abbeel_policy_search/)
+          * [Deep Reinforcement Learning](http://videolectures.net/deeplearning2017_van_hasselt_deep_reinforcement/)
+        * Great courses list (not only watch, but always do the assignments too!):
+          * [Deep RL Bootcamp](https://sites.google.com/view/deep-rl-bootcamp/home)
+          * [Reinforcement Learning Summer School](http://videolectures.net/deeplearning2017_montreal/)
+          * [CS 294: Deep Reinforcement Learning](http://rll.berkeley.edu/deeprlcourse/)
 
 ## Repository organization
 
