@@ -1,6 +1,5 @@
 import gym
 from itertools import count
-from collections import namedtuple
 import torch, torch.nn as nn
 from torch.autograd import Variable
 import matplotlib.pyplot as plt
@@ -8,38 +7,56 @@ import torch.nn.functional as F
 import numpy as np
 import torch.optim as optim
 import random
+import math
 
-ByteTensor = torch.ByteTensor
-
-NUM_EPISODES = 1000
+NUM_EPISODES = 150
 SCREEN_WIDTH = 400
 SCREEN_LENGTH =600
 WINDOW_MAX_Y = 300
 WINDOW_MIN_Y = 200
 BATCH_SIZE = 1000
-GAMMA = 0.9
-EXPLORE_RATIO = 0.2
+GAMMA = 0.999
+START_EXPLORE_RATIO = 0.9
+END_EXPLORE_RATIO = 0.02
+NUM_FEATURES = 14
 
-Transition = namedtuple("Transition", ("state", "action", "reward", "next_state"))
+state_list = []
+
+LongTensor = torch.LongTensor
+FloatTensor = torch.FloatTensor
+#Tensor = torch.Tensor
+#LongTensor = torch.cuda.LongTensor
+#FloatTensor = torch.cuda.FloatTensor
+# Tensor = torch.cuda.Tensor
 
 class DQN(nn.Module):
     def __init__(self):
         super(DQN, self).__init__()
-        self.input = nn.Linear(24, 72)
-        self.hidden = nn.Linear(72, 36)
-        self.output = nn.Linear(36, 16)
+        self.input = nn.Linear(NUM_FEATURES, 200)
+        self.hidden = nn.Linear(200, 100)
+        self.output = nn.Linear(100, 16)
+
+        # Weights initialization
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                # 'n' is number of inputs to each neuron
+                n = len(m.weight.data[1])
+                # "Xavier" initialization
+                m.weight.data.normal_(0, np.sqrt(2. / n))
+                m.bias.data.zero_()
 
     def forward(self,x):
-        x = F.tanh(self.input(x))
-        x = F.tanh(self.hidden(x))
-        return F.tanh(self.output(x))
+        x = F.relu(self.input(x))
+        x = F.relu(self.hidden(x))
+        return self.output(x)
 
 
 class TransitionBuffer:
     def __init__(self):
         self.buffer = []
+        self.batch_size = 100
         for i in range(BATCH_SIZE):
-            self.buffer.append([get_state(np.zeros(24)),torch.FloatTensor([0]),torch.FloatTensor([0]),get_state(np.zeros(24))])
+            self.buffer.append([get_state(np.zeros(NUM_FEATURES)),FloatTensor([0]),FloatTensor([0]),get_state(np.zeros(NUM_FEATURES))])
 
     def push(self,transition):
         self.buffer.append(transition)
@@ -56,16 +73,16 @@ def update_model(transition_buffer,optimizer):
     states,actions,rewards,next_states = transition_buffer.get_batch()
 
     non_final_mask = [i for i,state in enumerate(next_states) if state is not None]
-    non_final_mask = torch.LongTensor(non_final_mask)
+    non_final_mask = LongTensor(non_final_mask)
     # We don't want to backprop through the expected action values and volatile
     # will save us on temporarily changing the model parameters'
     # requires_grad to False!
-    non_final_next_states = Variable(torch.cat([s for s in next_states if s is not None]).view(-1,24), volatile=True)
+    non_final_next_states = Variable(torch.cat([s for s in next_states if s is not None]).view(-1,NUM_FEATURES), volatile=True)
 
     #print(non_final_next_states)
 
-    states = Variable(torch.cat(list(states)).view(-1,24))
-    actions = Variable(torch.cat(list(actions)).view(-1,1).type(torch.LongTensor))
+    states = Variable(torch.cat(list(states)).view(-1,NUM_FEATURES))
+    actions = Variable(torch.cat(list(actions)).view(-1,1).type(LongTensor))
     rewards = Variable(torch.cat(list(rewards)))
 
     #print("States:",states,", actions:",actions,", rewards:",rewards)
@@ -75,8 +92,8 @@ def update_model(transition_buffer,optimizer):
     q_values = model(states).gather(1, actions)
     #print("Qvals:",q_values)
 
-    # Compute V(s_{t+1}) for all next states.
-    next_state_values = Variable(torch.zeros(BATCH_SIZE).type(torch.Tensor))
+    # Compute V(s_{t+1}) for all next states. This is equal to taking max of q_values
+    next_state_values = Variable(torch.zeros(BATCH_SIZE).type(FloatTensor))
 
     next_state_values[non_final_mask] = model(non_final_next_states).max(1)[0]
 
@@ -100,13 +117,18 @@ def update_model(transition_buffer,optimizer):
 
 
 def get_state(obs):
+    state_list.append(obs[:NUM_FEATURES].tolist())
     return torch.from_numpy(obs).float()
 
+
 #Returns the index of the action with max value according to our DQN model
-def get_action(model,state):
+def get_action(model,state,explore_ratio):
     chance = random.random()
-    if chance > EXPLORE_RATIO:
-        return int(model(state).data.max(0)[1].numpy()[0])
+    if chance > explore_ratio:
+        q_values = model(state)
+        #print(state)
+        #Returning index of max q_value
+        return int(np.argmax(q_values.data.numpy()))
     else:
         return random.randint(0, 15)
 
@@ -117,50 +139,67 @@ def get_action_vec(action_ind):
     #Changing value scope from {0,1} to {-1,1}
     return action_vec*2 - 1
 
+
+def get_decay_ratio():
+    inv_pow = 1/NUM_EPISODES
+    return math.pow(END_EXPLORE_RATIO/START_EXPLORE_RATIO,1/NUM_EPISODES)
+
 if __name__ == '__main__':
     env = gym.make('BipedalWalker-v2').unwrapped
     env.reset()
     model = DQN()
+    #model.cuda()
     transition_buffer = TransitionBuffer()
 
-    optimizer = optim.RMSprop(model.parameters())
+    optimizer = optim.RMSprop(model.parameters(), lr=0.0001)
 
     reward_his = np.zeros(NUM_EPISODES)
     steps_his = np.zeros(NUM_EPISODES)
+    distance_his = np.zeros(NUM_EPISODES)
+    velocity_his = np.zeros(NUM_EPISODES)
+
+    min_max_states = np.zeros((NUM_FEATURES,2))
+
+    explore_ratio = START_EXPLORE_RATIO
+    explore_decay_ratio = get_decay_ratio()
 
     for episode in range(NUM_EPISODES):
         env.reset()
         action_vec = env.action_space.sample()
 
-        current_state = get_state(np.zeros(24))
+        current_state = get_state(np.zeros(NUM_FEATURES))
         for i in count():
+        #for i in range(100):
             #Rendering screen
             env.render(mode='rgb_array')
 
-            #Getting best action index
-            action_ind = get_action(model,Variable(current_state, volatile=True))
+            #Getting action vector[a0,a1,a2,a3], aN = {-1,1}
+            if i < 20:
+                # Forcing the walker to fall in particular position
+                action_ind = 8
+                #action_vec = np.array([1,-1,-1,-1])
 
-            #Getting action for each joint, 4 values {-1,1}
-            #Forcing the walker to fall in particular position
-            if i > 20:
-                action_vec = get_action_vec(action_ind)
             else:
-                action_vec = np.array([1,-1,-1,-1])
-
-            #print("action_id =",action_ind,", action vec =",action_vec)
+                # Getting best action index
+                action_ind = get_action(model, Variable(current_state, volatile=True), explore_ratio)
+                # Getting action for each joint, 4 values {-1,1}
+            action_vec = get_action_vec(action_ind)
 
             #Executing step according to our action
-            #obs, reward, done, info = env.step(action_vec)
             obs, reward, done, info = env.step(action_vec)
 
+            #Saving velocity to calculate distance traveled
+            distance_his[episode] += obs[2]
+
             if done is False:
-                next_state = get_state(obs)
+                next_state = get_state(obs[:NUM_FEATURES])
                 reward_his[episode] += reward
             else:
                 next_state = None
 
-            #Storing transition
-            transition_buffer.push([current_state,torch.FloatTensor([action_ind]),torch.FloatTensor([reward]),next_state])
+            #Storing transition into transition buffer
+            if i >= 20:
+                transition_buffer.push([current_state,FloatTensor([action_ind]), FloatTensor([reward]), next_state])
 
             #Updating states
             current_state = next_state
@@ -170,5 +209,26 @@ if __name__ == '__main__':
 
             if done is True:
                 steps_his[episode] = i
-                print("Episode",episode,", steps = ", i, ", total reward:", reward_his[episode], ",steps_avg",np.mean(steps_his[:episode+1]),",reward_avg",np.mean(reward_his[:episode+1]))
+                velocity_his[episode] = distance_his[episode]/i
+                print("Episode", episode, ", steps = ", i,
+                      ", total reward:", reward_his[episode],
+                      ", steps_avg:", np.mean(steps_his[:episode+1]),
+                      ", reward_avg:", np.mean(reward_his[:episode+1]),
+                      ", distance traveled:", distance_his[episode],
+                      ", average speed:", velocity_his[episode],
+                      ", explore ratio:", explore_ratio)
                 break
+
+        explore_ratio = explore_ratio*explore_decay_ratio
+
+    print(np.array(state_list).max(0))
+    print(min_max_states)
+    plt.ylabel("distance traveled")
+    plt.xlabel("episode id")
+    plt.plot(np.arange(0,NUM_EPISODES,1),distance_his)
+    plt.show()
+
+    plt.ylabel("avg velocity")
+    plt.xlabel("episode id")
+    plt.plot(np.arange(0,NUM_EPISODES, 1), velocity_his)
+    plt.show()
