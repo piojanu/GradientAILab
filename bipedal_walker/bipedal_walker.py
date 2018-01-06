@@ -9,32 +9,29 @@ import torch.optim as optim
 import random
 import math
 
-NUM_EPISODES = 150
+NUM_EPISODES = 200
 SCREEN_WIDTH = 400
 SCREEN_LENGTH =600
 WINDOW_MAX_Y = 300
 WINDOW_MIN_Y = 200
-BATCH_SIZE = 1000
+BUFFER_SIZE = 65536
 GAMMA = 0.999
-START_EXPLORE_RATIO = 0.9
-END_EXPLORE_RATIO = 0.02
+START_EXPLORE_RATIO = 0.7
+END_EXPLORE_RATIO = 0.1
 NUM_FEATURES = 14
+FALL_TIME = 30
 
 state_list = []
 
 LongTensor = torch.LongTensor
 FloatTensor = torch.FloatTensor
-#Tensor = torch.Tensor
-#LongTensor = torch.cuda.LongTensor
-#FloatTensor = torch.cuda.FloatTensor
-# Tensor = torch.cuda.Tensor
 
 class DQN(nn.Module):
     def __init__(self):
         super(DQN, self).__init__()
-        self.input = nn.Linear(NUM_FEATURES, 200)
-        self.hidden = nn.Linear(200, 100)
-        self.output = nn.Linear(100, 16)
+        self.hidden1 = nn.Linear(NUM_FEATURES, 400)
+        self.hidden2 = nn.Linear(400, 300)
+        self.output = nn.Linear(300, 16)
 
         # Weights initialization
         for m in self.modules():
@@ -46,74 +43,78 @@ class DQN(nn.Module):
                 m.bias.data.zero_()
 
     def forward(self,x):
-        x = F.relu(self.input(x))
-        x = F.relu(self.hidden(x))
+        x = F.tanh(self.hidden1(x))
+        x = F.tanh(self.hidden2(x))
         return self.output(x)
 
+    def update(self,transition_buffer, optimizer):
+        # Compute a mask of non-final states and concatenate the batch elements
+        transition_batch = transition_buffer.get_batch()
+
+        #If buffer_size < batch_size
+        if transition_batch is None:
+            return
+
+        states, actions, rewards, next_states = transition_batch
+        non_final_mask = [i for i, state in enumerate(next_states) if state is not None]
+        non_final_mask = LongTensor(non_final_mask)
+        # We don't want to backprop through the expected action values and volatile
+        # will save us on temporarily changing the model parameters'
+        # requires_grad to False!
+        non_final_next_states = Variable(torch.cat([s for s in next_states if s is not None]).view(-1, NUM_FEATURES),
+                                         volatile=True)
+
+        # print(non_final_next_states)
+
+        states = Variable(torch.cat(list(states)).view(-1, NUM_FEATURES))
+        actions = Variable(torch.cat(list(actions)).view(-1, 1).type(LongTensor))
+        rewards = Variable(torch.cat(list(rewards)))
+
+        # print("States:",states,", actions:",actions,", rewards:",rewards)
+
+        # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
+        # columns of actions taken
+        q_values = self.forward(states).gather(1, actions)
+        # print("Qvals:",q_values)
+
+        # Compute V(s_{t+1}) for all next states. This is equal to taking max of q_values
+        next_state_values = Variable(torch.zeros(32).type(FloatTensor))
+
+        next_state_values[non_final_mask] = self.forward(non_final_next_states).max(1)[0]
+
+        # Now, we don't want to mess up the loss with a volatile flag, so let's
+        # clear it. After this, we'll just end up with a Variable that has
+        # requires_grad=False
+        next_state_values.volatile = False
+
+        # Compute the expected Q values
+        expected_state_action_values = (next_state_values * GAMMA) + rewards
+
+        # Compute Huber loss
+        loss = F.smooth_l1_loss(q_values, expected_state_action_values)
+
+        # Optimize the model
+        optimizer.zero_grad()
+        loss.backward()
+        for param in model.parameters():
+            param.grad.data.clamp_(-1, 1)
+        optimizer.step()
 
 class TransitionBuffer:
     def __init__(self):
         self.buffer = []
-        self.batch_size = 100
-        for i in range(BATCH_SIZE):
-            self.buffer.append([get_state(np.zeros(NUM_FEATURES)),FloatTensor([0]),FloatTensor([0]),get_state(np.zeros(NUM_FEATURES))])
+        self.batch_size = 32
 
     def push(self,transition):
         self.buffer.append(transition)
-        if len(self.buffer) > BATCH_SIZE:
+        if len(self.buffer) > BUFFER_SIZE:
             self.buffer.pop(0)
 
     def get_batch(self):
-        #Transposing list of lists
-        return list(zip(*self.buffer))
-
-
-def update_model(transition_buffer,optimizer):
-    # Compute a mask of non-final states and concatenate the batch elements
-    states,actions,rewards,next_states = transition_buffer.get_batch()
-
-    non_final_mask = [i for i,state in enumerate(next_states) if state is not None]
-    non_final_mask = LongTensor(non_final_mask)
-    # We don't want to backprop through the expected action values and volatile
-    # will save us on temporarily changing the model parameters'
-    # requires_grad to False!
-    non_final_next_states = Variable(torch.cat([s for s in next_states if s is not None]).view(-1,NUM_FEATURES), volatile=True)
-
-    #print(non_final_next_states)
-
-    states = Variable(torch.cat(list(states)).view(-1,NUM_FEATURES))
-    actions = Variable(torch.cat(list(actions)).view(-1,1).type(LongTensor))
-    rewards = Variable(torch.cat(list(rewards)))
-
-    #print("States:",states,", actions:",actions,", rewards:",rewards)
-
-    # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
-    # columns of actions taken
-    q_values = model(states).gather(1, actions)
-    #print("Qvals:",q_values)
-
-    # Compute V(s_{t+1}) for all next states. This is equal to taking max of q_values
-    next_state_values = Variable(torch.zeros(BATCH_SIZE).type(FloatTensor))
-
-    next_state_values[non_final_mask] = model(non_final_next_states).max(1)[0]
-
-    # Now, we don't want to mess up the loss with a volatile flag, so let's
-    # clear it. After this, we'll just end up with a Variable that has
-    # requires_grad=False
-    next_state_values.volatile = False
-
-    # Compute the expected Q values
-    expected_state_action_values = (next_state_values * GAMMA) + rewards
-
-    # Compute Huber loss
-    loss = F.smooth_l1_loss(q_values, expected_state_action_values)
-
-    # Optimize the model
-    optimizer.zero_grad()
-    loss.backward()
-    for param in model.parameters():
-        param.grad.data.clamp_(-1, 1)
-    optimizer.step()
+        if len(self.buffer) >= self.batch_size:
+            batch = random.sample(self.buffer, self.batch_size)
+            # Transposing list of lists
+            return list(zip(*batch))
 
 
 def get_state(obs):
@@ -142,7 +143,7 @@ def get_action_vec(action_ind):
 
 def get_decay_ratio():
     inv_pow = 1/NUM_EPISODES
-    return math.pow(END_EXPLORE_RATIO/START_EXPLORE_RATIO,1/NUM_EPISODES)
+    return math.pow(END_EXPLORE_RATIO/START_EXPLORE_RATIO, 1/NUM_EPISODES)
 
 if __name__ == '__main__':
     env = gym.make('BipedalWalker-v2').unwrapped
@@ -158,7 +159,7 @@ if __name__ == '__main__':
     distance_his = np.zeros(NUM_EPISODES)
     velocity_his = np.zeros(NUM_EPISODES)
 
-    min_max_states = np.zeros((NUM_FEATURES,2))
+    min_max_states = np.zeros((NUM_FEATURES, 2))
 
     explore_ratio = START_EXPLORE_RATIO
     explore_decay_ratio = get_decay_ratio()
@@ -174,7 +175,7 @@ if __name__ == '__main__':
             env.render(mode='rgb_array')
 
             #Getting action vector[a0,a1,a2,a3], aN = {-1,1}
-            if i < 20:
+            if i < FALL_TIME:
                 # Forcing the walker to fall in particular position
                 action_ind = 8
                 #action_vec = np.array([1,-1,-1,-1])
@@ -198,14 +199,14 @@ if __name__ == '__main__':
                 next_state = None
 
             #Storing transition into transition buffer
-            if i >= 20:
-                transition_buffer.push([current_state,FloatTensor([action_ind]), FloatTensor([reward]), next_state])
+            if i >= FALL_TIME:
+                transition_buffer.push([current_state, FloatTensor([action_ind]), FloatTensor([reward]), next_state])
 
             #Updating states
             current_state = next_state
 
             #Updating model
-            update_model(transition_buffer,optimizer)
+            model.update(transition_buffer,optimizer)
 
             if done is True:
                 steps_his[episode] = i
@@ -221,14 +222,12 @@ if __name__ == '__main__':
 
         explore_ratio = explore_ratio*explore_decay_ratio
 
-    print(np.array(state_list).max(0))
-    print(min_max_states)
     plt.ylabel("distance traveled")
     plt.xlabel("episode id")
-    plt.plot(np.arange(0,NUM_EPISODES,1),distance_his)
+    plt.plot(np.arange(0, NUM_EPISODES, 1), distance_his)
     plt.show()
 
     plt.ylabel("avg velocity")
     plt.xlabel("episode id")
-    plt.plot(np.arange(0,NUM_EPISODES, 1), velocity_his)
+    plt.plot(np.arange(0, NUM_EPISODES, 1), velocity_his)
     plt.show()
