@@ -32,6 +32,7 @@ Do you have your own project/idea or want to join one of our projects? **[Contac
         * Ch. 21
 2. Deep Reinforcement Learning:
     * Book [Reinforcement Learning: An Introduction (2nd Edition Draft)](http://ufal.mff.cuni.cz/~straka/courses/npfl114/2016/sutton-bookdraft2016sep.pdf)
+    * Andrej Karpathy great post about [Deep Reinforcement Learning: Pong from Pixels](http://karpathy.github.io/2016/05/31/rl/)
     * Courses:
         * *Personally I would start with those lectures:*
           * [Reinforcement Learning](http://videolectures.net/deeplearning2017_pineau_reinforcement_learning/)
