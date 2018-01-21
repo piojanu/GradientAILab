@@ -34,4 +34,4 @@ More details about BipedalWalker-v2 environment can be found [here](https://gith
 	  conda install -c https://conda.anaconda.org/kne pybox2d
 
  ## A demo showing current state of project
-![Alt Text](https://github.com/PiotrSobczak/GradientAILab/blob/master/bipedal_walker/assets/walker.gif)
+![Alt Text](https://github.com/piojanu/GradientAILab/blob/master/bipedal_walker/assets/bipedal_walkergif.gif)

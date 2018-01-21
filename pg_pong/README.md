@@ -2,11 +2,11 @@
 
 It's PyTorch implementation of [this](http://karpathy.github.io/2016/05/31/rl/) tutorial's example pg agent for pong game.
 
-## Dependencies
+## Dependencies *(and version I used)*
 
-* [Jupyter Notebook](http://jupyter.readthedocs.io/en/latest/install.html)
-* [PyTorch](http://pytorch.org/)
-* [OpenAI Gym](https://gym.openai.com/docs/)
+* [Jupyter Notebook 5.0.0](http://jupyter.readthedocs.io/en/latest/install.html)
+* [PyTorch 0.2.0](http://pytorch.org/)
+* [OpenAI Gym 0.9.2](https://gym.openai.com/docs/)
 
 ## Usage
 

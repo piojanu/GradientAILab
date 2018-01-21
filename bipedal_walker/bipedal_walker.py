@@ -127,6 +127,7 @@ class TransitionBuffer:
             # Transposing list of lists
             return list(zip(*batch))
 
+
 #Returns the index of the action with max value according to our DQN model
 def get_action(model,state, explore_ratio, randomization=True):
     chance = random.random()
@@ -173,8 +174,11 @@ if __name__ == '__main__':
         env.reset()
         action_vec = env.action_space.sample()
 
+
         current_state = FloatTensor(np.zeros(NUM_FEATURES))
+
         for i in count():
+        #for i in range(100):
             #Rendering screen
             env.render(mode='rgb_array')
 
@@ -192,7 +196,6 @@ if __name__ == '__main__':
 
                 # Getting action for each joint(4 values {-1,1})
                 action_vec = get_action_vec(int(action_ind.cpu().numpy()))
-
 
             #Executing step according to our action
             obs, reward, done, info = env.step(action_vec)
@@ -214,6 +217,7 @@ if __name__ == '__main__':
             current_state = next_state
 
             #Updating model
+
             model.update(transition_buffer)
 
             if done is True:
