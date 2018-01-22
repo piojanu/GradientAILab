@@ -9,7 +9,8 @@ import torch.optim as optim
 import random
 import math
 
-NUM_EPISODES = 200
+
+NUM_EPISODES = 2000
 SCREEN_WIDTH = 400
 SCREEN_LENGTH =600
 WINDOW_MAX_Y = 300
@@ -17,14 +18,23 @@ WINDOW_MIN_Y = 200
 BUFFER_SIZE = 65536
 GAMMA = 0.999
 START_EXPLORE_RATIO = 0.7
-END_EXPLORE_RATIO = 0.1
-NUM_FEATURES = 14
+END_EXPLORE_RATIO = 0.05
+NUM_FEATURES = 24
 FALL_TIME = 30
 
-state_list = []
+# Check if GPU is available
+use_gpu = torch.cuda.is_available()
 
-LongTensor = torch.LongTensor
-FloatTensor = torch.FloatTensor
+if use_gpu:
+    print("Using GPU")
+    LongTensor = torch.cuda.LongTensor
+    FloatTensor = torch.cuda.FloatTensor
+
+else:
+    print("Using CPU")
+    LongTensor = torch.LongTensor
+    FloatTensor = torch.FloatTensor
+
 
 class DQN(nn.Module):
     def __init__(self):
@@ -42,12 +52,14 @@ class DQN(nn.Module):
                 m.weight.data.normal_(0, np.sqrt(2. / n))
                 m.bias.data.zero_()
 
+        self.optimizer = optim.RMSprop(self.parameters(), lr=0.0001)
+
     def forward(self,x):
         x = F.tanh(self.hidden1(x))
         x = F.tanh(self.hidden2(x))
         return self.output(x)
 
-    def update(self,transition_buffer, optimizer):
+    def update(self,transition_buffer):
         # Compute a mask of non-final states and concatenate the batch elements
         transition_batch = transition_buffer.get_batch()
 
@@ -64,8 +76,6 @@ class DQN(nn.Module):
         non_final_next_states = Variable(torch.cat([s for s in next_states if s is not None]).view(-1, NUM_FEATURES),
                                          volatile=True)
 
-        # print(non_final_next_states)
-
         states = Variable(torch.cat(list(states)).view(-1, NUM_FEATURES))
         actions = Variable(torch.cat(list(actions)).view(-1, 1).type(LongTensor))
         rewards = Variable(torch.cat(list(rewards)))
@@ -75,7 +85,6 @@ class DQN(nn.Module):
         # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
         # columns of actions taken
         q_values = self.forward(states).gather(1, actions)
-        # print("Qvals:",q_values)
 
         # Compute V(s_{t+1}) for all next states. This is equal to taking max of q_values
         next_state_values = Variable(torch.zeros(32).type(FloatTensor))
@@ -94,11 +103,12 @@ class DQN(nn.Module):
         loss = F.smooth_l1_loss(q_values, expected_state_action_values)
 
         # Optimize the model
-        optimizer.zero_grad()
+        self.optimizer.zero_grad()
         loss.backward()
         for param in model.parameters():
             param.grad.data.clamp_(-1, 1)
-        optimizer.step()
+        self.optimizer.step()
+
 
 class TransitionBuffer:
     def __init__(self):
@@ -117,24 +127,19 @@ class TransitionBuffer:
             return list(zip(*batch))
 
 
-def get_state(obs):
-    state_list.append(obs[:NUM_FEATURES].tolist())
-    return torch.from_numpy(obs).float()
-
-
 #Returns the index of the action with max value according to our DQN model
-def get_action(model,state,explore_ratio):
+def get_action(model,state, explore_ratio, randomization=True):
     chance = random.random()
-    if chance > explore_ratio:
-        q_values = model(state)
-        #print(state)
-        #Returning index of max q_value
-        return int(np.argmax(q_values.data.numpy()))
+    if chance < explore_ratio and randomization:
+        return LongTensor([random.randint(0, 15)])
     else:
-        return random.randint(0, 15)
+        q_values = model(state)
+
+        return q_values.max(0)[1].data
+
 
 def get_action_vec(action_ind):
-    #Getting binary vector of action ie. 9 is 1001
+    #Getting binary vector of action ie. 0 is 0000 and 15 is 1111
     action_vec = np.array([int(bit) for bit in '{0:04b}'.format(action_ind)])
 
     #Changing value scope from {0,1} to {-1,1}
@@ -142,17 +147,17 @@ def get_action_vec(action_ind):
 
 
 def get_decay_ratio():
-    inv_pow = 1/NUM_EPISODES
-    return math.pow(END_EXPLORE_RATIO/START_EXPLORE_RATIO, 1/NUM_EPISODES)
+    return math.pow(END_EXPLORE_RATIO/START_EXPLORE_RATIO, 1.5/NUM_EPISODES)
 
 if __name__ == '__main__':
     env = gym.make('BipedalWalker-v2').unwrapped
     env.reset()
     model = DQN()
-    #model.cuda()
-    transition_buffer = TransitionBuffer()
 
-    optimizer = optim.RMSprop(model.parameters(), lr=0.0001)
+    if use_gpu:
+        model.cuda()
+
+    transition_buffer = TransitionBuffer()
 
     reward_his = np.zeros(NUM_EPISODES)
     steps_his = np.zeros(NUM_EPISODES)
@@ -168,7 +173,9 @@ if __name__ == '__main__':
         env.reset()
         action_vec = env.action_space.sample()
 
-        current_state = get_state(np.zeros(NUM_FEATURES))
+
+        current_state = FloatTensor(np.zeros(NUM_FEATURES))
+
         for i in count():
         #for i in range(100):
             #Rendering screen
@@ -178,13 +185,16 @@ if __name__ == '__main__':
             if i < FALL_TIME:
                 # Forcing the walker to fall in particular position
                 action_ind = 8
-                #action_vec = np.array([1,-1,-1,-1])
+                #action_vec = np.array([1, -1, -1, -1])
 
             else:
+                randomization = bool(np.mod(episode, 50))
+
                 # Getting best action index
-                action_ind = get_action(model, Variable(current_state, volatile=True), explore_ratio)
-                # Getting action for each joint, 4 values {-1,1}
-            action_vec = get_action_vec(action_ind)
+                action_ind = get_action(model, Variable(current_state, volatile=True), explore_ratio, randomization)
+
+                # Getting action for each joint(4 values {-1,1})
+                action_vec = get_action_vec(int(action_ind.cpu().numpy()))
 
             #Executing step according to our action
             obs, reward, done, info = env.step(action_vec)
@@ -193,20 +203,21 @@ if __name__ == '__main__':
             distance_his[episode] += obs[2]
 
             if done is False:
-                next_state = get_state(obs[:NUM_FEATURES])
+                next_state = FloatTensor(obs[:NUM_FEATURES])
                 reward_his[episode] += reward
             else:
                 next_state = None
 
             #Storing transition into transition buffer
             if i >= FALL_TIME:
-                transition_buffer.push([current_state, FloatTensor([action_ind]), FloatTensor([reward]), next_state])
+                transition_buffer.push([current_state, action_ind, FloatTensor([reward]), next_state])
 
             #Updating states
             current_state = next_state
 
             #Updating model
-            model.update(transition_buffer,optimizer)
+
+            model.update(transition_buffer)
 
             if done is True:
                 steps_his[episode] = i
@@ -220,7 +231,8 @@ if __name__ == '__main__':
                       ", explore ratio:", explore_ratio)
                 break
 
-        explore_ratio = explore_ratio*explore_decay_ratio
+        if explore_ratio > END_EXPLORE_RATIO:
+            explore_ratio = explore_ratio*explore_decay_ratio
 
     plt.ylabel("distance traveled")
     plt.xlabel("episode id")
