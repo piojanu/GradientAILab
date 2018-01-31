@@ -41,7 +41,9 @@ Read README.md in root directory of this repo. It's best starting point.
         * [ORG] - "Organization" project e.g. change in this README.
         * [PG_PONG] - "Policy Gradient Pong" project based on Karpathy's blog post.
         * [Q_LEARN] - "Introduction to TD-Learning and Q-Learning algorithm" project.
-        * [BIPEDAL] - Bipedal walker experiments project.
+        * [BIPEDAL] - Bipedal walker experiments project.  
+		  
+		You can install [this hook](https://gist.github.com/piojanu/4a68c70411f25f9bfcdee194d3dba374) to remind you about adding it.
 
     * If you work in this repo, remote branch names should follow those templates:
 
